@@ -1,27 +1,27 @@
 const express = require('express');
-const visitors = require('../models/visitors');
+const appointments = require('../models/appointments');
 
 
 const router = express.Router();
 
-//save visitors
-router.post('/visitors/save', (req, res) => {
-    let newVisitors = new visitors(req.body);
-    newVisitors.save((err) => {
+//save appointments
+router.post('/appointments/save', (req, res) => {
+    let newAppointments= new appointments(req.body);
+    newAppointments.save((err) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "New visitor added successfully."
+            success: "New appointments added successfully."
         });
     });
 });
 
-//get visitors
-router.get('/visitors', (req, res) => {
-    visitors.find().exec((err, visitors) => {
+//get appointments
+router.get('/appointments', (req, res) => {
+    appointments.find().exec((err, appointments) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -29,33 +29,33 @@ router.get('/visitors', (req, res) => {
         }
         return res.status(200).json({
             success:true,
-            existingVisitors:visitors
+            existingAppointments:appointments
         });
     });
 });
 
-//get a specific visitors
-router.get("/visitors/:id", (req, res) => {
-    let visitorsId = req.params.id;
-    visitors.findById(visitorsId, (err, visitors) => {
+//get a specific appointments
+router.get("/appointments/:id", (req, res) => {
+    let appointmentsId = req.params.id;
+    appointments.findById(appointmentsId, (err, appointments) => {
         if(err){
             return res.status(400).json({success:false, err});
         }
         return res.status(200).json({
             success:true,
-            visitors
+            appointments
         });
     });
 });
 
-//update visitors
-router.put('/visitors/update/:id',(req,res) => {
-    visitors.findByIdAndUpdate(
+//update appointments
+router.put('/appointments/update/:id',(req,res) => {
+    appointments.findByIdAndUpdate(
         req.params.id,
         {
             $set: req.body
         },
-        (err, visitors) => {
+        (err, appointments) => {
             if(err){
                 return res.status(400).json({error:err});
             }
@@ -66,14 +66,14 @@ router.put('/visitors/update/:id',(req,res) => {
     );
 });
 
-//Delete visitors
-router.delete('/visitors/delete/:id', (req, res) => {
-    visitors.findByIdAndRemove(req.params.id).exec((err, deletedvisitors) => {
+//Delete appointments
+router.delete('/appointments/delete/:id', (req, res) => {
+    appointments.findByIdAndRemove(req.params.id).exec((err, deletedappointments) => {
         if(err) return res.status(400).json({
             message: "Delete unsuccessful", err
         })
         return res.status(200).json({
-            message: "Deleted Successfully", deletedvisitors 
+            message: "Deleted Successfully", deletedappointments
         })
     });
 });
